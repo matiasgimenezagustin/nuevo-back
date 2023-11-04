@@ -109,12 +109,15 @@ const productRouter = require('./routers/productRouter')
 const cartRouter = require('./routers/cartRouter');
 const { isUser } = require('./middleweres/authMiddlewere');
 const { Message } = require('./dao/models/messages');
+const routerMock = require('./routers/mocking');
 
 app.use('/products', productRouter)
 
 app.use('/session', userRouter)
 
 app.use('/api/cart', cartRouter)
+
+app.use("/", routerMock)
 
 app.get('/', (req, res) => {
   res.render('login');

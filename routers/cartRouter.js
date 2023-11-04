@@ -3,6 +3,7 @@ const express = require('express')
 const { addProductCart } = require('../dao/controllers/cartController')
 const { getCartById, getCartPopulated, buyCart } = require('../dao/repositories/cartRepository')
 const { isUser } = require('../middleweres/authMiddlewere')
+const ERRORS = require('../handlers/errorHanlder')
 
 
 
@@ -46,7 +47,7 @@ router.post('/:cid/purchase', isUser, async (req, res) => {
       return res.status(200).json({ status: 'success', message: 'Compra realizada con éxito' });
     } catch (error) {
       console.error('Error al procesar la compra:', error);
-      return res.status(500).json({ status: 'error', message: 'Error interno del servidor' });
+      return res.status(ERRORS.GENERATE_TICKET_ERROR.status).json(ERRORS.GENERATE_TICKET_ERROR);
     }
   });
   
