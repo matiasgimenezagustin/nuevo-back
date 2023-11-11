@@ -1,12 +1,14 @@
 const express = require('express');
-const ERRORS = require('../handlers/errorHandler'); // Asegúrate de tener la ruta correcta
+
 const cartController = require('../dao/controllers/cartController');
 const CustomError = require('../managers/errorManager');
+const ERRORS = require('../handlers/errorHanlder');
+const { isUser } = require('../middleweres/authMiddlewere');
 
 
 const router = express.Router();
 
-router.post('/:cid/products/:pid', cartController.isUser, async (req, res) => {
+router.post('/:cid/products/:pid', isUser, async (req, res) => {
   try {
     const { cid, pid } = req.params;
     const response = await cartController.addProductCart(cid, pid);
@@ -18,12 +20,13 @@ router.post('/:cid/products/:pid', cartController.isUser, async (req, res) => {
       res.status(error.status).json({ error: error.message });
     } else {
       const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+      req.logger.error(customError)
       res.status(customError.status).json({ error: customError.message });
     }
   }
 });
 
-router.post('/:cid/purchase', cartController.isUser, async (req, res) => {
+router.post('/:cid/purchase', isUser, async (req, res) => {
   try {
     const { cid } = req.params;
     let productsNotProcessed = await cartController.buyCart(cid, req.user.email);
@@ -32,11 +35,12 @@ router.post('/:cid/purchase', cartController.isUser, async (req, res) => {
   } catch (error) {
     console.error('Error al procesar la compra:', error);
     const customError = new CustomError(ERRORS.GENERATE_TICKET_ERROR.message, ERRORS.GENERATE_TICKET_ERROR.status);
+    req.logger.error(customError)
     return res.status(customError.status).json({ error: customError.message });
   }
 });
 
-router.get('/', cartController.isUser, async (req, res) => {
+router.get('/', isUser, async (req, res) => {
   try {
     let cartComplete = await cartController.getCartPopulated(req.user.cart);
     console.log(cartComplete.products);
@@ -44,6 +48,7 @@ router.get('/', cartController.isUser, async (req, res) => {
   } catch (error) {
     console.error('Error al obtener el carrito:', error);
     const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+    req.logger.error(customError)
     res.status(customError.status).json({ error: customError.message });
   }
 });

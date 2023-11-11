@@ -9,13 +9,29 @@ require('./passportConfig')
 const dotenv = require('dotenv');
 const WebSocket = require('ws');
 const http = require('http');
+const winston = require('winston')
+const errorMiddleware = require('./middleweres/errorMiddlewere');
+const attachLogger = require('./middleweres/attachLogger');
 
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.Console({
+      level: 'verbose'
+    })
+  ]
+})
+
+dotenv.config()
 
 
 const app = express();
 
 const server = http.createServer(app);
 
+
+app.use((req, res, next) =>  {
+  next()
+})
 
 
 const wss = new WebSocket.Server({ port: 8081});
@@ -52,7 +68,7 @@ wss.on('connection', async (websocket) => {
   });
 });
 
-dotenv.config()
+
 
 
 const DB_CONNECTION_STRING = process.env.DB_CONNECTION_STRING
@@ -66,6 +82,8 @@ const store = new MongoDBStore({
   collection: 'sessions',
 });
 
+
+app.use(attachLogger)
 
 app.use(
   session({
@@ -84,7 +102,7 @@ app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(errorHandlerMiddleware)
+app.use(errorMiddleware)
 
 
 mongoose.connect(DB_CONNECTION_STRING, {
@@ -111,7 +129,9 @@ const cartRouter = require('./routers/cartRouter');
 const { isUser } = require('./middleweres/authMiddlewere');
 const { Message } = require('./dao/models/messages');
 const routerMock = require('./routers/mocking');
-const errorHandlerMiddleware = require('./middleweres/errorMiddlewere');
+const testRouter = require('./routers/loggerTestRouter');
+
+
 
 
 
@@ -122,6 +142,8 @@ app.use('/session', userRouter)
 app.use('/api/cart', cartRouter)
 
 app.use("/", routerMock)
+
+app.use('/testRouter', testRouter)
 
 app.get('/', (req, res) => {
   res.render('login');
