@@ -1,14 +1,17 @@
-const productsMock = [];  // Aquí crea tus productos de ejemplo
+const {faker} = require('@faker-js/faker')
 
-for (let i = 1; i <= 100; i++) {
-  const product = {
-    _id: `product_id_${i}`,
-    title: `Product ${i}`,
-    description: `Description for Product ${i}`,
-    price: 10 + i, 
-    stock: 100,
+// Función para generar un producto con datos aleatorios
+const generateMockProduct = () => {
+  return {
+    _id: faker.datatype.uuid(),
+    title: faker.commerce.productName(),
+    description: faker.commerce.productDescription(),
+    price: faker.datatype.number({ min: 10, max: 100 }),
+    stock: faker.datatype.number({ min: 1, max: 100 }),
+    // Otros campos de producto si los tienes
   };
-  productsMock.push(product);
-}
+};
+
+const productsMock = Array.from({ length: 100 }, generateMockProduct);
 
 module.exports = { productsMock };

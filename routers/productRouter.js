@@ -1,27 +1,68 @@
 const express = require('express');
+const ERRORS = require('../handlers/errorHandler'); // Asegúrate de tener la ruta correcta
+const productController = require('../dao/controllers/productController');
+const CustomError = require('../managers/errorManager');
 
-const { getProducts } = require('../dao/controllers/productController');
-const { getProductById } = require('../dao/repositories/productRepository');
-const ERRORS = require('../handlers/errorHanlder');
+
 const routerProducts = express.Router();
 
-
-
-routerProducts.get('/', getProducts)
-
-routerProducts.get('/:pid', async (req, res) =>{
-  console.log(req.user)
-  const {pid} = req.params
-  const product = await getProductById(pid)
-  if(product){
-    res.render('detail', {isUser: req.user.role == 'usuario', product, user: req.user})
-  }else{
-    res.status(ERRORS.PRODUCT_NOT_FOUND.status).json(ERRORS.PRODUCT_NOT_FOUND)
+routerProducts.get('/', async (req, res) => {
+  try {
+    const result = await productController.getProducts();
+    res.status(200).json(result);
+  } catch (error) {
+    const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+    res.status(customError.status).json({ error: customError.message });
   }
-})
+});
 
+routerProducts.get('/:pid', async (req, res) => {
+  try {
+    const pid = req.params.pid;
+    const product = await productController.getProductById(pid);
+    res.status(200).json(product);
+  } catch (error) {
+    if (error instanceof CustomError) {
+      res.status(error.status).json({ error: error.message });
+    } else {
+      const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+      res.status(customError.status).json({ error: customError.message });
+    }
+  }
+});
 
-// Resto de las rutas de productos
-// ...
+routerProducts.post('/', async (req, res) => {
+  try {
+    const newProduct = req.body;
+    const response = await productController.createProduct(newProduct);
+    res.status(200).json(response);
+  } catch (error) {
+    const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+    res.status(customError.status).json({ error: customError.message });
+  }
+});
+
+routerProducts.put('/:pid', async (req, res) => {
+  try {
+    const updatedProduct = req.body;
+    const { pid } = req.params;
+    const response = await productController.updateProductById(pid, updatedProduct);
+    res.status(200).json(response);
+  } catch (error) {
+    const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+    res.status(customError.status).json({ error: customError.message });
+  }
+});
+
+routerProducts.delete('/:pid', async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const response = await productController.deleteProduct(pid);
+    res.status(200).json(response);
+  } catch (error) {
+    const customError = new CustomError(ERRORS.INTERNAL_SERVER_ERROR.message, ERRORS.INTERNAL_SERVER_ERROR.status);
+    res.status(customError.status).json({ error: customError.message });
+  }
+});
 
 module.exports = routerProducts;

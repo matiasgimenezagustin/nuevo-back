@@ -22,5 +22,5 @@ exports.getCartPopulated = async (cid) =>{
 
 
 exports.buyCart = async (cid) =>{
-  return await cartRepository.buyCart
+  return await cartRepository.buyCart(cid)
 }

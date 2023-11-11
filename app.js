@@ -84,6 +84,7 @@ app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(errorHandlerMiddleware)
 
 
 mongoose.connect(DB_CONNECTION_STRING, {
@@ -110,6 +111,9 @@ const cartRouter = require('./routers/cartRouter');
 const { isUser } = require('./middleweres/authMiddlewere');
 const { Message } = require('./dao/models/messages');
 const routerMock = require('./routers/mocking');
+const errorHandlerMiddleware = require('./middleweres/errorMiddlewere');
+
+
 
 app.use('/products', productRouter)
 
@@ -122,6 +126,7 @@ app.use("/", routerMock)
 app.get('/', (req, res) => {
   res.render('login');
 });
+
 
 // Ruta para la vista del chat
 app.get('/chat', isUser, async (req, res) => {
