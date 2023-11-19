@@ -3,7 +3,13 @@ const passport = require('passport');
 const bcrypt = require('bcrypt'); // Añade esta importación para hashear contraseñas
 const User = require('../dao/models/user');
 const CartController = require('../dao/controllers/cartController');
+const MailingService = require('../services/mailService');
+const { restoreMail } = require('../constants/DMailInfo');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
+
+const config = require('../config')
+
 
 // Ruta GET para la vista de registro
 router.get('/register', (req, res) => {
@@ -68,5 +74,49 @@ router.get('/logout', (req, res) => {
   req.logout(); // Cierra la sesión
   res.redirect('/session/login'); // Redirige al usuario a la vista de inicio de sesión
 });
+
+router.post('/passwordRestoreRequest', async (req, res) =>{
+
+  const {email} = req.body
+  const mailerService = new MailingService()
+  
+
+  const token = jwt.sign({email}, config.jwt.SECRET, {expiresIn: 3600})
+  const result = await mailerService.sendmail(  restoreMail(email, token))
+  return res.json({ok: true})
+})
+
+router.get('/passwordRestore', (req, res) =>{
+  const {token } = req.query
+  if(!token){
+    res.render('errorRestorePassword', {error: 'Ruta no autorizada'})
+  }
+  try{
+    jwt.verify(token, config.jwt.SECRET)
+
+    res,render('passwordRestore')
+  }
+  catch(err){
+    if(err.expiredAt){
+      res.render('errorRestorePassword', {error: "El link del correo expiro"})
+    }
+    res.render('errorRestorePassword', {error: err.message})
+  }
+
+})
+
+router.put('/passwordRestore', async (req,res) =>{
+  const {password, token} = req.body
+  try{
+    const {email} = jwt.verify(token, config.jwt.SECRET)
+     await User.changePassword(email, password)
+    res.sendStatus(200)
+  }
+  catch(err){
+    res.sendStatus(500)
+  }
+
+
+})
 
 module.exports = router;

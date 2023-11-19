@@ -11,7 +11,7 @@ const logger = new LoggerService(process.env.MODE)
 
 const attachLogger = (req, res, next) => {
     req.logger = logger.logger
-    console.log(logger)
+
     req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
     next()
 }

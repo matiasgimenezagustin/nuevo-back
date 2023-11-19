@@ -12,6 +12,10 @@ const http = require('http');
 const winston = require('winston')
 const errorMiddleware = require('./middleweres/errorMiddlewere');
 const attachLogger = require('./middleweres/attachLogger');
+const MailingService = require('./services/mailService');
+
+const nodemailer = require('nodemailer')
+
 
 const logger = winston.createLogger({
   transports: [
@@ -26,6 +30,10 @@ dotenv.config()
 
 const app = express();
 
+
+app.use(express.json())
+
+
 const server = http.createServer(app);
 
 
@@ -33,6 +41,27 @@ app.use((req, res, next) =>  {
   next()
 })
 
+console.log({
+  user: process.env.GMAIL_USER,
+  password: process.env.GMAIL_PASSWORD
+})
+
+
+
+/* app.get('/mails', async (req, res) =>{
+  
+  const mailService  = new MailingService()
+  const mailResult = mailService.sendmail({
+    from: 'yo',
+    to: 'reference',
+    subject: 'asunto X',
+    html: '<h1>Hola mundo</h1>',
+  })
+
+  console.log(mailResult)
+  res.sendStatus(200)
+})
+ */
 
 const wss = new WebSocket.Server({ port: 8081});
 
@@ -130,6 +159,7 @@ const { isUser } = require('./middleweres/authMiddlewere');
 const { Message } = require('./dao/models/messages');
 const routerMock = require('./routers/mocking');
 const testRouter = require('./routers/loggerTestRouter');
+
 
 
 

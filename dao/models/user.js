@@ -16,6 +16,27 @@ userSchema.methods.validatePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+userSchema.statics.changePassword = async function (email, newPassword) {
+  try {
+    const user = await this.findOne({ email });
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Hashear la nueva contraseña
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Actualizar la contraseña en la base de datos
+    user.password = hashedPassword;
+    await user.save();
+
+    console.log('Contraseña cambiada exitosamente.');
+  } catch (error) {
+    console.error('Error al cambiar la contraseña:', error.message);
+  }
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

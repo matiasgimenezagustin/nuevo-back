@@ -14,9 +14,45 @@
         <br>
         <input type="submit" value="Iniciar Sesión">
         <a href="/session/register">Aun no tienes cuenta?</a>
+        <p>Olvidaste tu contraseña? puedes restablecerla <button onclick="restorePassword()">Aqui</button></p>
     </form>
     {{#if errorMessage}}
         <p class="error">{{errorMessage}}</p>
     {{/if}}
+
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        async function restorePassword(){
+            Swal.fire({
+                text: 'Ingresa tu correo para restaurar la contraseña',
+                input: 'text',
+                inputValidator: value =>{
+                    return !value && 'NO enviaste un correo electronico'
+                }
+            }).then( async result =>{
+                try{
+                    const email = result.value
+                    const response = await fetch('/session/passwordRestoreRequest', {
+                        method: 'POST',
+                        body: JSON.stringify({email}),
+                        headers: {
+                            "Content-type": 'application/json'
+                        }
+                    }).then((result)=>{
+                        if(result.ok){
+                            Swal.fire({
+                                text: 'Se te enviara un correo'
+                            })
+                        }
+                    })
+                }
+                catch(err){
+                    console.error(err)
+                }
+            })
+        }
+    </script>
 </body>
 </html>
