@@ -14,16 +14,21 @@ const errorMiddleware = require('./middleweres/errorMiddlewere');
 const attachLogger = require('./middleweres/attachLogger');
 const MailingService = require('./services/mailService');
 
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUIExpress = require('swagger-ui-express')
+
 const nodemailer = require('nodemailer')
 
 
-const logger = winston.createLogger({
+
+
+/* const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({
       level: 'verbose'
     })
   ]
-})
+}) */
 
 dotenv.config()
 
@@ -33,6 +38,22 @@ const app = express();
 
 app.use(express.json())
 
+const swaggerSpecOption = {
+  definition: {
+    openapi:'3.0.1',
+    info: {
+      title: 'Proyecto final',
+      description: 'Aplicacion ecommerce con sessiones y carritos'
+    }
+  },
+  apis: [
+    `${__dirname}/docs/*.yml`
+  ]
+}
+
+const swaggerSpec = swaggerJSDoc(swaggerSpecOption)
+
+app.use('/apidocs', swaggerUIExpress.serve, swaggerUIExpress.setup(swaggerSpec))
 
 const server = http.createServer(app);
 

@@ -3,11 +3,15 @@ const express = require('express');
 const productController = require('../dao/controllers/productController');
 const CustomError = require('../managers/errorManager');
 const ERRORS = require('../handlers/errorHanlder');
+const { checkUserRole } = require('../middleweres/authMiddlewere');
 
 
 const routerProducts = express.Router();
 
-routerProducts.get('/', async (req, res) => {
+routerProducts.get('/', productController.getProducts );
+
+//Antiguo codigo 
+/* async (req, res) => {
   try {
     const result = await productController.getProducts();
     res.status(200).json(result);
@@ -16,13 +20,13 @@ routerProducts.get('/', async (req, res) => {
     req.logger.error(customError)
     res.status(customError.status).json({ error: customError.message });
   }
-});
+} */
 
 routerProducts.get('/:pid', async (req, res) => {
   try {
     const pid = req.params.pid;
     const product = await productController.getProductById(pid);
-    res.status(200).json(product);
+    res.status(200).render('detail', {product, isUser: req.user.role == 'user'});
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.status).json({ error: error.message });
@@ -34,7 +38,7 @@ routerProducts.get('/:pid', async (req, res) => {
   }
 });
 
-routerProducts.post('/', async (req, res) => {
+routerProducts.post('/', checkUserRole, async (req, res) => {
   try {
     const newProduct = req.body;
     const response = await productController.createProduct(newProduct);
@@ -46,7 +50,7 @@ routerProducts.post('/', async (req, res) => {
   }
 });
 
-routerProducts.put('/:pid', async (req, res) => {
+routerProducts.put('/:pid', checkUserRole,  async (req, res) => {
   try {
     const updatedProduct = req.body;
     const { pid } = req.params;
@@ -59,7 +63,7 @@ routerProducts.put('/:pid', async (req, res) => {
   }
 });
 
-routerProducts.delete('/:pid', async (req, res) => {
+routerProducts.delete('/:pid', checkUserRole, async (req, res) => {
   try {
     const { pid } = req.params;
     const response = await productController.deleteProduct(pid);

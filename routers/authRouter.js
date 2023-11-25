@@ -65,7 +65,7 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/products', 
     failureRedirect: '/session/login',
-    failureFlash: true, // Asegúrate de que esta opción esté habilitada para mostrar mensajes flash en caso de fallo
+    failureFlash: true, 
   })
 );
 
@@ -89,26 +89,28 @@ router.post('/passwordRestoreRequest', async (req, res) =>{
 router.get('/passwordRestore', (req, res) =>{
   const {token } = req.query
   if(!token){
-    res.render('errorRestorePassword', {error: 'Ruta no autorizada'})
+    return res.render('errorRestorePassword', {error: 'Ruta no autorizada'})
   }
   try{
     jwt.verify(token, config.jwt.SECRET)
 
-    res,render('passwordRestore')
+    return res.render('passwordRestore')
   }
   catch(err){
     if(err.expiredAt){
-      res.render('errorRestorePassword', {error: "El link del correo expiro"})
+      return res.render('errorRestorePassword', {error: "El link del correo expiro"})
     }
-    res.render('errorRestorePassword', {error: err.message})
+    return res.render('errorRestorePassword', {error: err.message})
   }
 
 })
 
 router.put('/passwordRestore', async (req,res) =>{
+  console.log('hola')
   const {password, token} = req.body
   try{
     const {email} = jwt.verify(token, config.jwt.SECRET)
+    console.log(email, password)
      await User.changePassword(email, password)
     res.sendStatus(200)
   }

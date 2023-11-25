@@ -17,4 +17,15 @@ const isUser = (req, res, next) => {
 };
 
 
-module.exports = {isAdmin, isUser}
+function checkUserRole(req, res, next) {
+  const user = req.user;
+
+  if (user && (user.role === 'admin' || user.role === 'premium')) {
+    next();
+  } else {
+    res.status(403).json({ error: 'Acceso no autorizado' });
+  }
+}
+
+
+module.exports = {isAdmin, isUser, checkUserRole}

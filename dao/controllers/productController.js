@@ -4,11 +4,11 @@ const productRepository = require("../repositories/productRepository");
 
 const getProducts = async (req, res) => {
   try {
-    const { limit = 10, page = 1, sort, query } = req.query;
+    const { limit = 10, page = 1, sort } = req.query;
     const skip = (page - 1) * limit;
     const totalProducts = await Product.countDocuments();
     const totalPages = Math.ceil(totalProducts / limit);
-    const products = await Product.find({ /* Filtros personalizados */ })
+    const products = await Product.find({  })
       .skip(skip)
       .limit(parseInt(limit))
       .sort(sort === 'asc' ? 'price' : sort === 'desc' ? '-price' : null);

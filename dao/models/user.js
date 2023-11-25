@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
   age: { type: Number },
   password: { type: String, required: true },
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart' },
-  role: { type: String, default: 'usuario' },
+  role: { type: String, enum: ['usuario', 'premium'], default: 'usuario' },
+  canCreateProducts: { type: Boolean, default: false },
 });
 
 // Método para validar la contraseña

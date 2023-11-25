@@ -1,0 +1,160 @@
+paths:
+  /product:
+    get:
+      summary: Renderiza los productos
+      tags:
+        - Products
+      parameters:
+        - name: limit
+          in: query
+          description: Número máximo de productos a devolver por página
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: page
+          in: query
+          description: Número de página a devolver
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: sort
+          in: query
+          description: Ordenar los productos por precio (ascendente o descendente)
+          required: false
+          schema:
+            type: string
+            enum: ['asc', 'desc']
+      responses:
+        "200":
+          description: Los productos devueltos correctamente
+          content:
+            application/json:
+              example:
+                products: 
+                  - id: "1"
+                    title: "Producto 1"
+                    description: "Descripción del Producto 1"
+                    price: 10.99
+                  - id: "2"
+                    title: "Producto 2"
+                    description: "Descripción del Producto 2"
+                    price: 19.99
+                pagination:
+                  totalPages: 5
+                  prevPage: 1
+                  nextPage: 3
+                  page: 2
+                  hasPrevPage: true
+                  hasNextPage: true
+        "404":
+          description: No se encontraron productos
+          content:
+            application/json:
+              example:
+                message: "No se encontraron productos"
+
+  /product/{pid}:
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Producto creado correctamente
+          content:
+            application/json:
+              example:
+                id: "123"
+                message: "Producto creado correctamente"
+        "403":
+          description: Acceso no autorizado
+          content:
+            application/json:
+              example:
+                error: "Acceso no autorizado"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: "Error interno del servidor"
+
+    put:
+      summary: Actualizar un producto existente
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto a actualizar
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+      responses:
+        "200":
+          description: Producto actualizado correctamente
+          content:
+            application/json:
+              example:
+                id: "123"
+                message: "Producto actualizado correctamente"
+        "403":
+          description: Acceso no autorizado
+          content:
+            application/json:
+              example:
+                error: "Acceso no autorizado"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              example:
+                error: "Producto no encontrado"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: "Error interno del servidor"
+
+    delete:
+      summary: Eliminar un producto
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto a eliminar
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+          content:
+            application/json:
+              example:
+                id: "123"
+                message: "Producto eliminado correctamente"
+        "403":
+          description: Acceso no autorizado
+          content:
+            application/json:
+              example:
+                error: "Acceso no autorizado"
+        "404":
+          description: Producto no encontrado
+          content:
+            application/json:
+              example:
+                error: "Producto no encontrado"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: "Error interno del servidor"

@@ -1,0 +1,118 @@
+paths:
+  /api/cart/{cid}/products/{pid}:
+    post:
+      summary: Agregar un producto al carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: ID del producto a agregar al carrito
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto agregado al carrito correctamente
+          content:
+            application/json:
+              example:
+                status: success
+                message: Compra realizada con éxito
+        "403":
+          description: Acceso no autorizado
+          content:
+            application/json:
+              example:
+                error: "Acceso no autorizado"
+        "404":
+          description: El carrito o el producto no fueron encontrados
+          content:
+            application/json:
+              example:
+                error: "El carrito o el producto no fueron encontrados"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: "Error interno del servidor"
+
+  /api/cart/{cid}/purchase:
+    post:
+      summary: Realizar la compra del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Compra realizada con éxito
+          content:
+            application/json:
+              example:
+                status: success
+                message: Compra realizada con éxito
+        "403":
+          description: Acceso no autorizado
+          content:
+            application/json:
+              example:
+                error: "Acceso no autorizado"
+        "500":
+          description: Error al procesar la compra
+          content:
+            application/json:
+              example:
+                error: "Error al procesar la compra"
+
+  /api/cart:
+    get:
+      summary: Obtener el contenido del carrito
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: Carrito obtenido correctamente
+          content:
+            application/json:
+              example:
+                user: 
+                  id: "1"
+                  name: "Usuario 1"
+                  email: "usuario1@example.com"
+                  cart: "123"
+                cart:
+                  id: "123"
+                  products:
+                    - id: "1"
+                      title: "Producto 1"
+                      description: "Descripción del Producto 1"
+                      price: 10.99
+                    - id: "2"
+                      title: "Producto 2"
+                      description: "Descripción del Producto 2"
+                      price: 19.99
+        "403":
+          description: Acceso no autorizado
+          content:
+            application/json:
+              example:
+                error: "Acceso no autorizado"
+        "500":
+          description: Error al obtener el carrito
+          content:
+            application/json:
+              example:
+                error: "Error al obtener el carrito"
