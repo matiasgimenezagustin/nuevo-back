@@ -220,7 +220,7 @@ app.listen(port, () => {
 
 
 
-
+module.exports = app
 
 /* createProduct({
     title: 'TV Samsung 52"',

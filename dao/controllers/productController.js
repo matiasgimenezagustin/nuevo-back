@@ -8,7 +8,7 @@ const getProducts = async (req, res) => {
     const skip = (page - 1) * limit;
     const totalProducts = await Product.countDocuments();
     const totalPages = Math.ceil(totalProducts / limit);
-    const products = await Product.find({  })
+    const products = await Product.find({})
       .skip(skip)
       .limit(parseInt(limit))
       .sort(sort === 'asc' ? 'price' : sort === 'desc' ? '-price' : null);
@@ -22,16 +22,25 @@ const getProducts = async (req, res) => {
       hasNextPage: page < totalPages,
     };
 
+    // Verifica si req.user está definido antes de acceder a req.user.role
+    const isUser = req.user && req.user.role === 'usuario';
 
-
-    res.render('home', { products, user: req.user, pagination, isUser: req.user.role === 'usuario'});
-
+    // Devuelve una respuesta JSON consistente
+    res.json({
+      products,   // Asegúrate de incluir 'products' en la respuesta JSON
+      pagination,
+      user: req.user,
+      isUser,
+    });
 
   } catch (error) {
     console.error('Error al obtener productos:', error);
-    res.render('error', { message: 'Error interno del servidor' }); // Renderiza una vista de error
+
+    // Renderiza una vista de error con un mensaje específico del error
+    res.status(500).json({ error: `Error interno del servidor: ${error.message}` });
   }
 };
+
 
 const verifyStock = async () =>{
   

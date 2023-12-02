@@ -8,7 +8,23 @@ const productSchema = new mongoose.Schema({
   stock: { type: Number, required: true },
   thumbnail: { type: String, required: false },
   id: { type: String, required: false },
-  owner: { type: String, default: 'admin', required: false, validate: isPremiumUser },
+  owner: {
+    type: String,
+    default: 'admin',
+    required: false,
+    validate: {
+      validator: function (value) {
+        // Si el valor es 'admin', lo consideramos válido
+        if (value === 'admin') {
+          return true;
+        }
+
+        // Si no es 'admin', entonces aplicamos la validación de isPremiumUser
+        return isPremiumUser(value);
+      },
+      message: 'Invalid owner',
+    },
+  },
 });
 
 async function isPremiumUser(value) {
