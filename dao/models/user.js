@@ -10,12 +10,28 @@ const userSchema = new mongoose.Schema({
   cart: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart' },
   role: { type: String, enum: ['usuario', 'premium'], default: 'usuario' },
   canCreateProducts: { type: Boolean, default: false },
+  documents: [
+    {
+      name: { type: String },
+      reference: { type: String },
+    },
+  ],
+  last_connection: { type: Date },
 });
 
-// Método para validar la contraseña
+
 userSchema.methods.validatePassword = async function (password) {
-  return bcrypt.compare(password, this.password);
+  const isPasswordValid = await bcrypt.compare(password, this.password);
+
+  if (isPasswordValid) {
+
+    this.last_connection = new Date();
+    await this.save();
+  }
+
+  return isPasswordValid;
 };
+
 
 userSchema.statics.changePassword = async function (email, newPassword) {
   try {

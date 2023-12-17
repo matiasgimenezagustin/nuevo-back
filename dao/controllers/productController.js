@@ -26,7 +26,7 @@ const getProducts = async (req, res) => {
     const isUser = req.user && req.user.role === 'usuario';
 
     // Devuelve una respuesta JSON consistente
-    res.json({
+    res.render('home', {
       products,   // Asegúrate de incluir 'products' en la respuesta JSON
       pagination,
       user: req.user,

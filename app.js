@@ -13,7 +13,7 @@ const winston = require('winston')
 const errorMiddleware = require('./middleweres/errorMiddlewere');
 const attachLogger = require('./middleweres/attachLogger');
 const MailingService = require('./services/mailService');
-
+const usersRouter = require('./routers/userRouter')
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUIExpress = require('swagger-ui-express')
 
@@ -185,6 +185,8 @@ const testRouter = require('./routers/loggerTestRouter');
 
 
 
+
+app.use('/api/users', usersRouter)
 
 app.use('/products', productRouter)
 
