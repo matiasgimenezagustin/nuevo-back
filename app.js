@@ -11,7 +11,7 @@ const WebSocket = require('ws');
 const http = require('http');
 const winston = require('winston')
 const errorMiddleware = require('./middleweres/errorMiddlewere');
-const attachLogger = require('./middleweres/attachLogger');
+/* const attachLogger = require('./middleweres/attachLogger'); */
 const MailingService = require('./services/mailService');
 const usersRouter = require('./routers/userRouter')
 const swaggerJSDoc = require('swagger-jsdoc')
@@ -134,8 +134,8 @@ const store = new MongoDBStore({
 });
 
 
-app.use(attachLogger)
-
+/* app.use(attachLogger)
+ */
 app.use(
   session({
     secret: 'your-secret-key',
