@@ -11,6 +11,19 @@ const jwt = require('jsonwebtoken');
 const config = require('../config')
 
 
+// Ruta GET para cerrar sesión
+
+router.get('/logout', (req, res) => {
+  req.logout(err => {
+    if (err) {
+      console.error('Error al cerrar la sesión:', err);
+      return res.status(500).json({ error: 'Error interno del servidor al cerrar la sesión' });
+    }
+    res.redirect('/session/login'); // Redirige al usuario a la vista de inicio de sesión
+  });
+});
+
+
 // Ruta GET para la vista de registro
 router.get('/register', (req, res) => {
   res.render('register', { errorMessage: req.flash('error') });
@@ -69,11 +82,6 @@ router.post(
   })
 );
 
-// Ruta GET para cerrar sesión
-router.get('/logout', (req, res) => {
-  req.logout(); // Cierra la sesión
-  res.redirect('/session/login'); // Redirige al usuario a la vista de inicio de sesión
-});
 
 router.post('/passwordRestoreRequest', async (req, res) =>{
 

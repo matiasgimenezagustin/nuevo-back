@@ -1,0 +1,25 @@
+.product{
+    width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.224);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.products-container{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.product-img-container{
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.product-img-container img{
+    width: 100%;
+}

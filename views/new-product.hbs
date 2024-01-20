@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <title>Zona de creacion</title>
+     <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/form-style.css">
+</head>
+<body>
+    {{#if editMode}}
+        <h1>Editar producto producto</h1>
+        <form action="/products/edit/{{product._id}}/edited" method="post">
+            <label for="name" class="label">Nombre del producto:</label>
+            <input class="input" id="name" name="title" required value="{{product.title}}">
+            <br>
+            <label for="description" class="label">Descripción:</label>
+            <textarea id="description" name="description" required class="input">{{product.description}}</textarea>
+            <br>
+            <label for="price" class="label">Precio:</label>
+            <input type="number" id="price" name="price" required class="input" value="{{product.price}}">
+            <br>
+            <label for="code" class="label">Código:</label>
+            <input id="code" name="code" required class="input" value="{{product.code}}">
+            <br>
+            <label for="stock" class="label">Stock:</label>
+            <input type="number" id="stock" name="stock" required class="input" value="{{product.stock}}">
+            <br>
+            <label for="thumbnail" class="label">Imagen (URL):</label>
+            <input type="text" id="thumbnail" name="thumbnail" class="input" value="{{product.thumbnail}}">
+            <br>
+            <input type="submit" value="Cargar producto" class="primary-btn">
+        </form>
+        {{else}}
+         <h1>Cargar producto</h1>
+        <form action="/products/" method="post">
+            <label for="name" class="label">Nombre del producto:</label>
+            <input class="input" id="name" name="title" required>
+            <br>
+            <label for="description" class="label">Descripción:</label>
+            <textarea id="description" name="description" required class="input"></textarea>
+            <br>
+            <label for="price" class="label">Precio:</label>
+            <input type="number" id="price" name="price" required class="input">
+            <br>
+            <label for="code" class="label">Código:</label>
+            <input id="code" name="code" required class="input">
+            <br>
+            <label for="stock" class="label">Stock:</label>
+            <input type="number" id="stock" name="stock" required class="input">
+            <br>
+            <label for="thumbnail" class="label">Imagen (URL):</label>
+            <input type="text" id="thumbnail" name="thumbnail" class="input">
+            <br>
+            <input type="submit" value="Cargar producto" class="primary-btn">
+        </form>
+    {{/if}}
+   
+</body>
+</html>
+

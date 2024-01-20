@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100;0,9..40,200;0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;0,9..40,1000;1,9..40,100;1,9..40,200;1,9..40,300;1,9..40,400;1,9..40,500;1,9..40,600;1,9..40,700;1,9..40,800;1,9..40,900;1,9..40,1000&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'DM Sans', sans-serif;
+}
+
+h1 {
+    color: #050714;
+    font-family: "DM Sans";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.input {
+    display: flex;
+    height: 56px;
+    padding: 10px 14px;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 20px;
+    border: 1px solid #D0D5DD;
+
+    background: #FFF;
+}
+
+.label {
+    color: #050714;
+    font-family: "DM Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.primary-btn {
+
+    height: 65px;
+    border-radius: 20px;
+    background: #4257CF;
+    color: white;
+    font-size: 20px;
+    border: none;
+
+}
+
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 30px;
+    
+}
+.header-actions{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.main{
+    padding: 30px;
+}
+.premium-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(to right, #f9dc4c, #eabf28);
+    border: none;
+    border-radius: 10px;
+
+    transition: background 0.3s ease;
+  }
+
+  .premium-button:hover {
+    background: linear-gradient(to right, #eabf28, #f9dc4c);
+  }
+
+
+  .add-product-button {
+    display: flex;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    background-color: #4257CF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .add-product-button:hover {
+    background-color: #2a3c96;
+  }
+
+ a {
+    color: #4257CF;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-decoration-line: underline;
+    background-color: transparent;
+    border: none;
+}
+.logout-button{
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.product-img{
+    width: 300px;
+
+}
+
+.detail{
+    display: flex;
+}
+.detail .left{
+    flex: 1;
+    padding: 30px;
+    position: relative;
+}
+
+.detail img{
+    width: 100%;
+    border-radius: 20px;
+   
+}
+
+.detail .content{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    gap: 10px;
+    color: white;
+    background-color: #05071469;
+    padding: 10px;
+    border-top-right-radius: 20px;
+    flex-direction: column;
+}
+.detail .content h1{
+    color: white;
+}
+
+.detail .rigth{
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.detail .rigth p{
+    min-height: 80%;
+}
+
+.actions-container{
+    display: flex;
+    gap: 20px;
+}
+
+
+
+/* Estilos para el botón de editar */
+.edit-btn{
+    display: flex;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    background-color: #4257CF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .edit-btn:hover {
+    background-color: #344aa2;
+  }
+  
+  /* Estilos para el botón de eliminar */
+  .actions-container form .delete-btn {
+    display: flex;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .actions-container form .delete-btn:hover {
+    background-color: #cc0000;
+  }
+  
+
+
+.cart{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+.products-cart{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 300px;
+
+}
+
+.products-cart div{
+    border-radius: 10px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.224);
+    padding: 10px;
+    height: 100px;
+}
+.cart-actions{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.successfully{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 60vh;
+}
+
+.successfully i{
+    font-size: 150px;
+    color: rgb(101, 180, 101);
+}
+
+.add-credit{
+    padding: 30px;
+}
+
+
+.w-100{
+    width: 100%;
+}
+.w-100 input{
+    width: 100%;
+}
+
+.w-50{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.w-50 div{
+    flex: 1;
+}
+.w-50 div input{
+    width: 100%;
+}
+
+.credit-card-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+
+.premium{
+    padding: 30px;
+}
+
+.send-info{
+    flex-direction: column;
+    display: flex;
+}

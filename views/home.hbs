@@ -1,51 +1,96 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Lista de Productos</title>
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/product.css">
+     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
+    <header>
+         <a href="/products">
+            <img src="/images/logo.svg" >
+        </a>
 
-    <a href="/chat">Chat Global</a>
-    <a href="/api/users">Ser premium</a>
-    {{!-- <form action="/api/users/premiun">
-         <button type="submit">Ser premium</button>
-    </form> --}}
-  
+        <div class="header-actions">
+            {{#if isNotPremium }}
+                <a href="/api/users">Ser premium</a>
+                {{else}}
+                <a href="/products/new" class="add-product-button">Cargar producto <i class="bi bi-plus-circle"></i></a>
+            {{/if}}
+            {{#if isAdmin}}
+                <a href="/chat" >Chat Global</a>
+            {{/if}}
+            {{#if isNotPremium}}
+                <a href="/api/cart"  class="logout-button">
+                    <i class="bi bi-cart2"></i>
+                </a>
+                <a href="/session/logout">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+                <a href="/api/cart">
+                    <i class="bi bi-cart2"></i>
+                </a>
+                {{else}}
+                <div class="premium-button">Premium</div>
+                  <a href="/api/cart"  class="logout-button">
+                    <i class="bi bi-cart2"></i>
+                </a>
+                <a href="/session/logout" class="logout-button">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+               
+            {{/if}}
+        </div>
+       
 
-    <h1>Lista de Productos</h1>
-    <ul>
-        {{#each products }}
-            <div>
+    </header>
+
+    <main class="main">
+
+        <h1>Lista de Productos</h1>
+        <section class="products-container">
+
+            {{#each products }}
+            <div class="product">
                 <h3>
                     {{this.title}}
                 </h3>
+                <div class="product-img-container">
+                    <img src="{{this.thumbnail}}" >
+                </div>
+                
                 <span>
                     Precio: {{this.price}}
                 </span>
-                <p>{{this.description}}</p>
-                </div>
+
                 <a href="/products/{{this._id}}">Ver detalle</a>
-                {{!-- {{#if ../isUser}}
-                    <button>Comprar</button>
-                    {{else}}
-                    <button>Eliminar</button>
-                    <button>Editar</button>
-                {{/if}} --}}
-        {{/each}}
-        
-    </ul>
-    
+            </div>
+           
+
+            {{/each}}
+
+        </section>
 
 
-    {{#if pagination.hasPrevPage}}
-    <a href="{{pagination.prevLink}}">Página anterior</a>
-    {{/if}}
 
-    <span>Página {{pagination.page}} de {{pagination.totalPages}}</span>
+        {{#if pagination.hasPrevPage}}
+        <a href="{{pagination.prevLink}}">Página anterior</a>
+        {{/if}}
 
-    {{#if pagination.hasNextPage}}
+        <span>Página {{pagination.page}} de {{pagination.totalPages}}</span>
+
+        {{#if pagination.hasNextPage}}
         <a href="{{pagination.nextLink}}">Página siguiente</a>
-    {{/if}}
+        {{/if}}
+    </main>
+
+
+
 
 </body>
+
 </html>

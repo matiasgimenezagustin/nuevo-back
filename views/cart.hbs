@@ -1,27 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/product.css">
+     <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <h1>Carrito de compras</h1>
-    {{#if cart.products.length}}
-         {{#each cart.products}}
-            <h2>{{this.id.title}}</h2>
-            <h3>Cantidad: {{this.quantity}}</h3>
-            <hr/>
-        {{/each}}
+    <header>
+        <a href="/products">
+            <img src="/images/logo.svg">
+        </a>
+
+        <div class="header-actions">
+
+
+            {{#if isNotPremium}}
+            <a href="/session/logout">
+                <i class="bi bi-box-arrow-left"></i>
+            </a>
+            {{else}}
+            <div class="premium-button">Premium</div>
+            <a href="/session/logout" class="logout-button">
+                <i class="bi bi-box-arrow-left"></i>
+            </a>
+            {{/if}}
+        </div>
+
+
+    </header>
+    <main class="cart">
+
+        <h1>Carrito de compras</h1>
+        {{#if cart.products.length}}
+        <div class="products-cart">
+            {{#each cart.products}}
+                <div>
+                    <h2>{{this.id.title}}</h2>
+
+                    <h3>Cantidad: {{this.quantity}}</h3>
+                </div>
+            {{/each}}
+        </div>
+       
         {{else}}
         <h2>Aun no has comprado nada</h2>
-    {{/if}}
-    <form action="/api/cart/{{user.cart}}/purchase" method="POST">
-        <input type="submit" value="confirmar carrito" />
-    </form>
-    <a href="/products">Volver</a>
+        {{/if}}
+  
+        <form class="cart-actions">
+            <a href="/api/cart/addCreditCard" class="add-product-button" >Confirmar Carrito </a>
+            <a href="/products">Volver</a>
+        </form>
+    </main>
+
    
 
 
+
 </body>
+
 </html>

@@ -62,7 +62,7 @@ const upload = multer({
 });
 
 // Endpoint para subir documentos
-userRouter.post('/:uid/documents', upload.array('documents'), async (req, res) => {
+userRouter.post('/premium/:uid/documents', upload.array('documents'), async (req, res) => {
   try {
     const userId = req.params.uid;
     const user = await User.findById(userId);
@@ -84,7 +84,11 @@ userRouter.post('/:uid/documents', upload.array('documents'), async (req, res) =
       // Guardar el usuario actualizado
       await user.save();
 
-      return res.status(200).json({ message: 'Documentos subidos exitosamente' });
+      // Cambiar el rol a 'premium'
+      user.role = 'premium';
+      await user.save();
+
+      return res.status(200).redirect('/products');
     } else {
       return res.status(400).json({ error: 'No se han proporcionado archivos' });
     }
@@ -93,5 +97,6 @@ userRouter.post('/:uid/documents', upload.array('documents'), async (req, res) =
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
 
 module.exports = userRouter;

@@ -63,7 +63,9 @@ class CartRepository {
   };
 
   async buyCart(cid, email) {
+
     const cart = await Cart.findById(cid).populate('products.id');
+    console.log(cart)
     const productsToUpdate = [];
     const productsNotProcessed = []; // Almacena los productos que no se pudieron procesar
   

@@ -31,6 +31,8 @@ const getProducts = async (req, res) => {
       pagination,
       user: req.user,
       isUser,
+      isAdmin: req.user.role == 'admin',
+      isNotPremium: req.user.role != 'premium'
     });
 
   } catch (error) {
@@ -50,8 +52,8 @@ const verifyStock = async () =>{
 
 
 // Crear un nuevo producto
-const createProduct = async (productData) => {
-    return await productRepository.createProduct(productData);
+const createProduct = async (productData, userId) => {
+    return await productRepository.createProduct(productData,userId);
 }
 
 // Eliminar un producto por su ID
@@ -64,10 +66,9 @@ const getProductById = async (productId) => {
     return await productRepository.getProductById(productId);
 }
 
-/* // Obtener todos los productos
-const getProducts = async () => {
-    return await productRepository.getProducts();
-} */
+const updateProductById = async  (pid, newProduct) =>{
+  return await productRepository.updateProductById(pid, newProduct)
+}
 
 // Actualizar el stock de un producto por su ID
 const updateStockProduct = async (productId, stock) => {
@@ -80,4 +81,5 @@ module.exports = {
   getProductById,
   getProducts,
   updateStockProduct,
+  updateProductById,
 };

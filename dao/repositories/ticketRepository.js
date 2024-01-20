@@ -17,6 +17,7 @@ function generateUniqueCode() {
 
 class TicketService{
     async generateTicket (email, amount) {
+
         const ticket = new Ticket({
             code: generateUniqueCode(), // Implementa una función para generar un código único
             purchase_datetime: new Date(),

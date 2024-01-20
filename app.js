@@ -16,7 +16,7 @@ const MailingService = require('./services/mailService');
 const usersRouter = require('./routers/userRouter')
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUIExpress = require('swagger-ui-express')
-
+const path = require('path');
 const nodemailer = require('nodemailer')
 
 
@@ -37,6 +37,7 @@ const app = express();
 
 
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'public')))
 
 const swaggerSpecOption = {
   definition: {
@@ -182,11 +183,13 @@ const routerMock = require('./routers/mocking');
 const testRouter = require('./routers/loggerTestRouter');
 
 
-
-
-
-
 app.use('/api/users', usersRouter)
+
+app.get('/products/new', (req, res) =>{
+  res.render('new-product')
+})
+
+
 
 app.use('/products', productRouter)
 
@@ -201,6 +204,7 @@ app.use('/testRouter', testRouter)
 app.get('/', (req, res) => {
   res.render('login');
 });
+
 
 
 // Ruta para la vista del chat
